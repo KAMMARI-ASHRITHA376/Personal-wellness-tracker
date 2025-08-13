@@ -1,0 +1,23 @@
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    img {
+      width: 100%;   /* Make image scale to screen */
+      max-width: 400px; /* Limit maximum size */
+      height: auto;
+      border-radius: 8px;
+    }
+    p {
+      padding: 10px;
+    }
+    @media (min-width: 600px) {
+      body {
+        background-color: #b97f7f;
+      }
+      p {
+        font-size: 1.2em;
+      }
+    }
