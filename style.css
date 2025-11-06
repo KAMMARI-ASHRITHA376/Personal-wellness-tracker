@@ -23,10 +23,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Semi-transparent dark background to dim the homepage */
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px); /* Optional: blurs the background slightly */
-    display: none; /* Hidden by default, toggled by JS */
+    backdrop-filter: blur(4px);
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 2000;
@@ -99,8 +98,8 @@ body {
     text-decoration: underline;
     color: #ff7e5f;
 }
-/* ----------------------------------------- */
 
+/* --- App Interface Styles --- */
 #appInterface {
     display: flex;
     flex-direction: column;
@@ -207,9 +206,9 @@ footer {
 .features-row {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch; /* Ensures all cards are same height */
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 25px;
 }
 
 .feature-card {
@@ -245,6 +244,8 @@ footer {
     margin: 0;
 }
 
+
+.feature-card.weekly { background: linear-gradient(to bottom right, #fc6767, #ec008c);color: white; }
 .feature-card.meditation { background: linear-gradient(to bottom right, #1e3c72, #2a5298); }
 .feature-card.mood { background: linear-gradient(to bottom right, #ff4e50, #f9d423); }
 .feature-card.journal { background: linear-gradient(to bottom right, #6a11cb, #2575fc); }
@@ -297,7 +298,92 @@ footer {
     background-color: #e66a50;
 }
 
-/* Specific Component Styles (Mood, Todo, etc.) remain largely the same, ensure they are included if they were cut off in previous pastes */
+/* --- Weekly Insights Page Styles --- */
+.quote-box {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #444;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-left: 5px solid #ff7e5f;
+    background: #fff9f5;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.recommendation-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.recommendation-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.recommendation-card ul {
+    margin-top: 15px;
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.recommendation-card li {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.recommendation-card.tough-week {
+    background-color: #eef7fe;
+    border: 1px solid #cce5ff;
+}
+
+.recommendation-card.good-week {
+    background-color: #f0fff4;
+    border: 1px solid #c3e6cb;
+}
+
+.recommendation-link {
+    color: #ff7e5f;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.recommendation-link:hover {
+    color: #d9534f;
+}
+/* --- ADD TO style.css --- */
+.weekly-list {
+    list-style: none;
+    padding: 0;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.weekly-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.weekly-item.positive { border-left: 5px solid #28a745; }
+.weekly-item.negative { border-left: 5px solid #dc3545; }
+.weekly-item.neutral { border-left: 5px solid #ffc107; }
+.weekly-item.no-entry { border-left: 5px solid #ccc; color: #999; }
+
+.weekly-date { font-weight: bold; color: #555; }
+.weekly-status { font-weight: 600; }
+
+/* --- Component Specific Styles --- */
 .mood-selector { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
 .mood-btn { font-size: 3rem; background: none; border: none; cursor: pointer; transition: transform 0.2s; }
 .mood-btn:hover { transform: scale(1.2); }
