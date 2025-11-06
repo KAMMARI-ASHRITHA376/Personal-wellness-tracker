@@ -17,18 +17,17 @@
     </div>
 
     <div id="appInterface">
-        <header>
-            🌿 Wellness Hub
-        </header>
+        <header>🌿 Wellness Hub</header>
         <nav>
             <div class="container">
                 <a href="#home" class="nav-link active" data-page="home">Home</a>
                 <a href="#meditation" class="nav-link" data-page="meditation">Meditation</a>
                 <a href="#mood" class="nav-link" data-page="mood">Mood Tracker</a>
-                <a href="#journal" class="nav-link" data-page="journal">Daily Journal</a>
-                <a href="#todo" class="nav-link" data-page="todo">To-Do List</a>
+                <a href="#journal" class="nav-link" data-page="journal">Journal</a>
+                <a href="#todo" class="nav-link" data-page="todo">To-Do</a>
                 <a href="#hercycle" class="nav-link" data-page="hercycle">HerCycle</a>
-                <a href="#games" class="nav-link" data-page="games">Stress-Relief Games</a>
+                <a href="#games" class="nav-link" data-page="games">Games</a>
+                <a href="#weekly" class="nav-link" data-page="weekly">Insights</a>
                 <a href="#login" class="nav-link" data-page="login">Login</a>
             </div>
         </nav>
@@ -36,56 +35,57 @@
             <section id="home" class="page active">
                 <div class="welcome-header">
                     <h1>Welcome to Wellness Hub</h1>
-                    <p>Your personal space for relaxation, self-care, and productivity. Explore our meditation guides, track your mood, jot down your thoughts, and organize your tasks — all in one place.</p>
+                    <p>Your personal space for relaxation, self-care, and productivity.</p>
                 </div>
+
                 <div class="features-row">
+                    <div class="feature-card weekly nav-card" data-page="weekly">
+                        <h3>🧠 Weekly Insights</h3>
+                        <p>See your mood trends & get tips.</p>
+                    </div>
                     <div class="feature-card meditation nav-card" data-page="meditation">
                         <h3>🧘 Meditation</h3>
-                        <p>Find peace and relaxation with guided meditations.</p>
+                        <p>Find peace and relaxation.</p>
                     </div>
                     <div class="feature-card mood nav-card" data-page="mood">
                         <h3>😊 Mood Tracker</h3>
-                        <p>Keep track of your emotions and well-being daily.</p>
+                        <p>Track emotions daily.</p>
                     </div>
                     <div class="feature-card journal nav-card" data-page="journal">
                         <h3>📖 Daily Journal</h3>
-                        <p>Write down your thoughts and reflect on your day.</p>
+                        <p>Reflect on your day.</p>
                     </div>
                     <div class="feature-card todo nav-card" data-page="todo">
                         <h3>✅ To-Do List</h3>
-                        <p>Stay productive by managing your daily tasks.</p>
+                        <p>Stay productive.</p>
                     </div>
                     <div class="feature-card cycle nav-card" data-page="hercycle">
                         <h3>💧 Cycle Tracker</h3>
-                        <p>Track your cycle and stay ahead of mood swings and cramps.</p>
+                        <p>Understand your body.</p>
                     </div>
                     <div class="feature-card games nav-card" data-page="games">
-                        <h3>🎮 Stress-Relief Games</h3>
-                        <p>Engage in activities designed to alleviate tension.</p>
+                        <h3>🎮 Stress-Relief</h3>
+                        <p>Play to relax.</p>
                     </div>
                 </div>
             </section>
+
             <section id="meditation" class="page">
                 <div class="page-header">
                     <h2>🧘 Meditation Timer</h2>
                     <p>Set your desired meditation time and relax.</p>
                 </div>
-
                 <div class="content-box">
                     <div id="timer">
                         <input type="number" id="minutes" placeholder="Minutes" min="1">
                         <button id="start-timer" class="btn">Start</button>
                         <div id="time-display">00:00</div>
                     </div>
-
                     <div id="meditation-audio-player">
                         <h3>🎶 Soothing Sounds</h3>
-
                         <audio id="meditation-audio" loop></audio>
-
                         <label for="track-selector">Choose a track:</label>
                         <select id="track-selector"></select>
-
                         <div class="audio-controls">
                             <button id="play-pause-btn">▶ Play</button>
                             <label for="volume-slider">Volume:</label>
@@ -111,6 +111,7 @@
                     <div id="mood-confirmation"></div>
                 </div>
             </section>
+
             <section id="journal" class="page">
                 <div class="page-header">
                     <h2>Daily Journal</h2>
@@ -122,6 +123,7 @@
                     <span id="save-confirmation"></span>
                 </div>
             </section>
+
             <section id="todo" class="page">
                 <div class="page-header">
                     <h2>To-Do List</h2>
@@ -135,6 +137,7 @@
                     <ul id="todo-list"></ul>
                 </div>
             </section>
+
             <section id="hercycle" class="page">
                 <div class="page-header">
                     <h2>Cycle Tracker</h2>
@@ -158,18 +161,28 @@
                     </div>
                 </div>
             </section>
+
             <section id="games" class="page">
                 <div class="page-header">
                     <h2>Stress-Relief Games</h2>
-                    <p>Engage in fun activities designed to alleviate tension and promote relaxation.</p>
+                    <p>Engage in fun activities designed to alleviate tension.</p>
                 </div>
                 <div class="content-box" id="games-content">
                 </div>
             </section>
+
+            <section id="weekly" class="page">
+                <div class="page-header">
+                    <h2>🧠 Your Weekly Insights</h2>
+                    <p>A summary of your well-being based on your logs this week.</p>
+                </div>
+                <div class="content-box" id="weekly-summary-content">
+                    Loading insights...
+                </div>
+            </section>
+
         </main>
-        <footer>
-            2025 Wellness Hub | Designed with ❤ for your well-being
-        </footer>
+        <footer>2025 Wellness Hub | Designed with ❤ for your well-being</footer>
     </div>
     <script type="module" src="index.js"></script>
 </body>
