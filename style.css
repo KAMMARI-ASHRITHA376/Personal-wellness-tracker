@@ -269,8 +269,21 @@ margin: 0 auto;
 #cycle-message { text-align: center; font-weight: 600; color: #555; min-height: 1.2em;}
 /* Login/Auth Styles */
 #authScreen { position: fixed; top:0; left:0; width: 100%; height: 100%; background: linear-gradient(to bottom, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb); display: flex; justify-content: center; align-items: center; z-index: 2000; flex-direction: column;}
+#authScreen .auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(16,24,40,0.08);
+    padding: 36px;
+    text-align: center;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(16,24,40,0.04);
+}
 #authScreen h2 { margin-bottom: 20px; color: #ff7e5f; }
 #authScreen input { width: 250px; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ccc;}
 #authScreen button { padding: 10px 20px; margin-top: 10px; border:none; border-radius:5px; background: #ff7e5f; color: white; cursor: pointer; font-weight: bold;}
 #authScreen p { margin-top: 15px; color: #333; cursor: pointer;}
 #appInterface { display: none; }
+
