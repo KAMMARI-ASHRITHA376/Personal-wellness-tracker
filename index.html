@@ -1,190 +1,176 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Wellness Hub - Homepage</title>
-<link rel="stylesheet" href="style.css">
-
+    <title>Wellness Hub - Homepage</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Login/Auth Screen -->
-<div id="authScreen" style="display:none;">
-<h2 id="authTitle">Login</h2>
-<input type="text" id="authUsername" placeholder="Username">
-<input type="password" id="authPassword" placeholder="Password">
-<input type="email" id="authEmail" placeholder="Email (for sign up)" style="display:none;">
-<button id="authBtn">Login</button>
-<p id="toggleAuth">Don't have an account? Sign Up</p>
-</div>
-<div id="appInterface">
-<header>
-🌿 Wellness Hub
-</header>
-<nav>
-<div class="container">
-<a href="#home" class="nav-link active" data-page="home">Home</a>
-<a href="#meditation" class="nav-link" data-page="meditation">Meditation</a>
-<a href="#mood" class="nav-link" data-page="mood">Mood Tracker</a>
-<a href="#journal" class="nav-link" data-page="journal">Daily Journal</a>
-<a href="#todo" class="nav-link" data-page="todo">To-Do List</a>
-<a href="#hercycle" class="nav-link" data-page="hercycle">HerCycle</a>
-<a href="#games" class="nav-link" data-page="games">Stress-Relief Games</a>
-<a href="#login" class="nav-link" data-page="login">Login</a>
-</div>
-</nav>
-<main class="container">
-<!-- Home Page Section -->
-<section id="home" class="page active">
-<div class="welcome-header">
-<h1>Welcome to Wellness Hub</h1>
-<p>Your personal space for relaxation, self-care, and productivity. Explore our meditation guides, track your mood, jot down your thoughts, and organize your tasks — all in one place.</p>
-</div>
-<div class="features-row">
-<div class="feature-card meditation nav-card" data-page="meditation">
-<h3>🧘 Meditation</h3>
-<p>Find peace and relaxation with guided meditations.</p>
-</div>
-<div class="feature-card mood nav-card" data-page="mood">
-<h3>😊 Mood Tracker</h3>
-<p>Keep track of your emotions and well-being daily.</p>
-</div>
-<div class="feature-card journal nav-card" data-page="journal">
-<h3>📖 Daily Journal</h3>
-<p>Write down your thoughts and reflect on your day.</p>
-</div>
-<div class="feature-card todo nav-card" data-page="todo">
-<h3>✅ To-Do List</h3>
-<p>Stay productive by managing your daily tasks.</p>
-</div>
-<div class="feature-card cycle nav-card" data-page="hercycle">
-<h3>💧 Cycle Tracker</h3>
-<p>Track your cycle and stay ahead of mood swings and cramps.</p>
-</div>
-<div class="feature-card games nav-card" data-page="games">
-<h3>🎮 Stress-Relief Games</h3>
-<p>Engage in activities designed to alleviate tension.</p>
-</div>
-</div>
-</section>
-<!-- Meditation Page Section -->
-<section id="meditation" class="page">
-  <div class="page-header">
-    <h2>🧘 Meditation Timer</h2>
-    <p>Set your desired meditation time and relax.</p>
-  </div>
-
-  <div class="content-box">
-    <!-- Meditation Timer -->
-    <div id="timer">
-      <input type="number" id="minutes" placeholder="Minutes" min="1">
-      <button id="start-timer" class="btn">Start</button>
-      <div id="time-display">00:00</div>
+    <div id="authScreen">
+        <div class="auth-card">
+            <h2 id="authTitle">Login</h2>
+            <input type="text" id="authUsername" placeholder="Username">
+            <input type="password" id="authPassword" placeholder="Password">
+            <input type="email" id="authEmail" placeholder="Email (for sign up)" style="display:none;">
+            <button id="authBtn">Login</button>
+            <p id="toggleAuth">Don't have an account? Sign Up</p>
+        </div>
     </div>
 
-    <!-- Meditation Audio -->
-    <div id="meditation-audio-player">
-      <h3>🎶 Soothing Sounds</h3>
+    <div id="appInterface">
+        <header>
+            🌿 Wellness Hub
+        </header>
+        <nav>
+            <div class="container">
+                <a href="#home" class="nav-link active" data-page="home">Home</a>
+                <a href="#meditation" class="nav-link" data-page="meditation">Meditation</a>
+                <a href="#mood" class="nav-link" data-page="mood">Mood Tracker</a>
+                <a href="#journal" class="nav-link" data-page="journal">Daily Journal</a>
+                <a href="#todo" class="nav-link" data-page="todo">To-Do List</a>
+                <a href="#hercycle" class="nav-link" data-page="hercycle">HerCycle</a>
+                <a href="#games" class="nav-link" data-page="games">Stress-Relief Games</a>
+                <a href="#login" class="nav-link" data-page="login">Login</a>
+            </div>
+        </nav>
+        <main class="container">
+            <section id="home" class="page active">
+                <div class="welcome-header">
+                    <h1>Welcome to Wellness Hub</h1>
+                    <p>Your personal space for relaxation, self-care, and productivity. Explore our meditation guides, track your mood, jot down your thoughts, and organize your tasks — all in one place.</p>
+                </div>
+                <div class="features-row">
+                    <div class="feature-card meditation nav-card" data-page="meditation">
+                        <h3>🧘 Meditation</h3>
+                        <p>Find peace and relaxation with guided meditations.</p>
+                    </div>
+                    <div class="feature-card mood nav-card" data-page="mood">
+                        <h3>😊 Mood Tracker</h3>
+                        <p>Keep track of your emotions and well-being daily.</p>
+                    </div>
+                    <div class="feature-card journal nav-card" data-page="journal">
+                        <h3>📖 Daily Journal</h3>
+                        <p>Write down your thoughts and reflect on your day.</p>
+                    </div>
+                    <div class="feature-card todo nav-card" data-page="todo">
+                        <h3>✅ To-Do List</h3>
+                        <p>Stay productive by managing your daily tasks.</p>
+                    </div>
+                    <div class="feature-card cycle nav-card" data-page="hercycle">
+                        <h3>💧 Cycle Tracker</h3>
+                        <p>Track your cycle and stay ahead of mood swings and cramps.</p>
+                    </div>
+                    <div class="feature-card games nav-card" data-page="games">
+                        <h3>🎮 Stress-Relief Games</h3>
+                        <p>Engage in activities designed to alleviate tension.</p>
+                    </div>
+                </div>
+            </section>
+            <section id="meditation" class="page">
+                <div class="page-header">
+                    <h2>🧘 Meditation Timer</h2>
+                    <p>Set your desired meditation time and relax.</p>
+                </div>
 
-      <!-- Hidden audio element -->
-      <audio id="meditation-audio" loop></audio>
+                <div class="content-box">
+                    <div id="timer">
+                        <input type="number" id="minutes" placeholder="Minutes" min="1">
+                        <button id="start-timer" class="btn">Start</button>
+                        <div id="time-display">00:00</div>
+                    </div>
 
-      <!-- Track selector -->
-      <label for="track-selector">Choose a track:</label>
-      <select id="track-selector"></select>
+                    <div id="meditation-audio-player">
+                        <h3>🎶 Soothing Sounds</h3>
 
-      <!-- Controls -->
-      <div class="audio-controls">
-        <button id="play-pause-btn">▶ Play</button>
-        <label for="volume-slider">Volume:</label>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
-      </div>
+                        <audio id="meditation-audio" loop></audio>
+
+                        <label for="track-selector">Choose a track:</label>
+                        <select id="track-selector"></select>
+
+                        <div class="audio-controls">
+                            <button id="play-pause-btn">▶ Play</button>
+                            <label for="volume-slider">Volume:</label>
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mood" class="page">
+                <div class="page-header">
+                    <h2>How are you feeling today?</h2>
+                    <p>Select an emoji that best represents your current mood.</p>
+                </div>
+                <div class="content-box">
+                    <div class="mood-selector">
+                        <button class="mood-btn" data-mood="Happy">😊</button>
+                        <button class="mood-btn" data-mood="Calm">😌</button>
+                        <button class="mood-btn" data-mood="Sad">😢</button>
+                        <button class="mood-btn" data-mood="Anxious">😟</button>
+                        <button class="mood-btn" data-mood="Angry">😠</button>
+                    </div>
+                    <div id="mood-confirmation"></div>
+                </div>
+            </section>
+            <section id="journal" class="page">
+                <div class="page-header">
+                    <h2>Daily Journal</h2>
+                    <p>"The unexamined life is not worth living." - Socrates</p>
+                </div>
+                <div class="content-box">
+                    <textarea id="journal-entry" placeholder="Write about your day, your thoughts, your feelings..."></textarea>
+                    <button class="btn" id="save-journal-btn">Save Entry</button>
+                    <span id="save-confirmation"></span>
+                </div>
+            </section>
+            <section id="todo" class="page">
+                <div class="page-header">
+                    <h2>To-Do List</h2>
+                    <p>Organize your day and clear your mind. What's on your list?</p>
+                </div>
+                <div class="content-box">
+                    <form id="todo-form">
+                        <input type="text" id="todo-input" placeholder="e.g., Drink water" required>
+                        <button type="submit" class="btn">Add Task</button>
+                    </form>
+                    <ul id="todo-list"></ul>
+                </div>
+            </section>
+            <section id="hercycle" class="page">
+                <div class="page-header">
+                    <h2>Cycle Tracker</h2>
+                    <p>Log your cycle to understand your body's patterns.</p>
+                </div>
+                <div class="content-box">
+                    <div class="cycle-form">
+                        <div class="form-group">
+                            <label for="last-period-date">Last Period Start Date:</label>
+                            <input type="date" id="last-period-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="cycle-length">Average Cycle Length (days):</label>
+                            <input type="number" id="cycle-length" value="28" min="10" max="60">
+                        </div>
+                        <button class="btn" id="save-cycle-btn">Save & Calculate</button>
+                    </div>
+                    <div class="cycle-display">
+                        <div id="cycle-message"></div>
+                        <div class="cycle-display-grid" id="cycle-display-grid"></div>
+                    </div>
+                </div>
+            </section>
+            <section id="games" class="page">
+                <div class="page-header">
+                    <h2>Stress-Relief Games</h2>
+                    <p>Engage in fun activities designed to alleviate tension and promote relaxation.</p>
+                </div>
+                <div class="content-box" id="games-content">
+                </div>
+            </section>
+        </main>
+        <footer>
+            2025 Wellness Hub | Designed with ❤ for your well-being
+        </footer>
     </div>
-  </div>
-</section>
-
-<!-- Mood Tracker Page Section -->
-<section id="mood" class="page">
-<div class="page-header">
-<h2>How are you feeling today?</h2>
-<p>Select an emoji that best represents your current mood.</p>
-</div>
-<div class="content-box">
-<div class="mood-selector">
-<button class="mood-btn" data-mood="Happy">😊</button>
-<button class="mood-btn" data-mood="Calm">😌</button>
-<button class="mood-btn" data-mood="Sad">😢</button>
-<button class="mood-btn" data-mood="Anxious">😟</button>
-<button class="mood-btn" data-mood="Angry">😠</button>
-</div>
-<div id="mood-confirmation"></div>
-</div>
-</section>
-<!-- Daily Journal Page Section -->
-<section id="journal" class="page">
-<div class="page-header">
-<h2>Daily Journal</h2>
-<p>"The unexamined life is not worth living." - Socrates</p>
-</div>
-<div class="content-box">
-<textarea id="journal-entry" placeholder="Write about your day, your thoughts, your feelings..."></textarea>
-<button class="btn" id="save-journal-btn">Save Entry</button>
-<span id="save-confirmation"></span>
-</div>
-</section>
-<!-- To-Do List Page Section -->
-<section id="todo" class="page">
-<div class="page-header">
-<h2>To-Do List</h2>
-<p>Organize your day and clear your mind. What's on your list?</p>
-</div>
-<div class="content-box">
-<form id="todo-form">
-<input type="text" id="todo-input" placeholder="e.g., Drink water" required>
-<button type="submit" class="btn">Add Task</button>
-</form>
-<ul id="todo-list"></ul>
-</div>
-</section>
-<!-- HerCycle Page Section -->
-<section id="hercycle" class="page">
-<div class="page-header">
-<h2>Cycle Tracker</h2>
-<p>Log your cycle to understand your body's patterns.</p>
-</div>
-<div class="content-box">
-<div class="cycle-form">
-<div class="form-group">
-<label for="last-period-date">Last Period Start Date:</label>
-<input type="date" id="last-period-date">
-</div>
-<div class="form-group">
-<label for="cycle-length">Average Cycle Length (days):</label>
-<input type="number" id="cycle-length" value="28" min="10" max="60">
-</div>
-<button class="btn" id="save-cycle-btn">Save & Calculate</button>
-</div>
-<div class="cycle-display">
-<div id="cycle-message"></div>
-<div class="cycle-display-grid" id="cycle-display-grid"></div>
-</div>
-</div>
-</section>
-<!-- Stress-Relief Games Page Section -->
-<section id="games" class="page">
-    <div class="page-header">
-        <h2>Stress-Relief Games</h2>
-        <p>Engage in fun activities designed to alleviate tension and promote relaxation.</p>
-    </div>
-    <div class="content-box" id="games-content">
-        <!-- Game suggestions and active game will be dynamically inserted here -->
-    </div>
-</section>
-</main>
-<footer>
-2025 Wellness Hub | Designed with ❤ for your well-being
-</footer>
-</div>
-<script type="module" src="index.js"></script>
+    <script type="module" src="index.js"></script>
 </body>
 </html>
