@@ -6,8 +6,7 @@ const WeeklyInsights = ({ user, changeTab }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // READ FROM LOCALSTORAGE
-    // Note: Assuming the structure is: [{ username: 'test', mood: 'Happy', date: '11/25/2025' }, ...]
+    // READ FROM LOCALSTORAGE: Combines Moods and Journals
     const data = JSON.parse(localStorage.getItem('wellness_data')) || [];
     const userHistory = data.filter(item => item.username === user.username);
     
@@ -21,7 +20,7 @@ const WeeklyInsights = ({ user, changeTab }) => {
   // --- DATA PROCESSING FOR GRAPH ---
   const moodScores = { "Happy": 5, "Calm": 4, "Neutral": 3, "Sad": 2, "Anxious": 1, "Angry": 1 };
 
-  // Generate data for the last 7 days for the chart
+  // Generate data points for the last 7 days (used for both graph and list)
   const chartData = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i)); 
@@ -61,7 +60,7 @@ const WeeklyInsights = ({ user, changeTab }) => {
           <>
             {history.length === 0 ? (
               <div className="text-center py-8">
-                 <h3 className="font-bold text-gray-700 text-xl mb-2">No data yet.</h3>
+                 <h3 className="font-bold text-gray-700 text-xl mb-2">No entries yet.</h3>
                  <button onClick={() => changeTab('mood')} className="btn-primary">Track Mood Now</button>
               </div>
             ) : (
@@ -90,22 +89,22 @@ const WeeklyInsights = ({ user, changeTab }) => {
                 </div>
 
                 {/* --- LIST HISTORY (FIXED LOGIC) --- */}
-                <h4 className="font-bold text-left mb-4 text-gray-700 border-b pb-2 text-lg">Detailed History ({history.length} entries)</h4>
+                <h4 className="font-bold text-left mb-4 text-gray-700 border-b pb-2 text-lg">Detailed History</h4>
                 <div className="flex flex-col gap-3">
-                  {history.map((entry, index) => (
-                    <div key={index} className={`flex justify-between items-center p-4 rounded-lg border-l-4 transition-all hover:bg-gray-50 ${moodScores[entry.mood] > 1 ? 'bg-white border-peachDark shadow-sm' : 'bg-white/50 border-gray-300'}`}>
+                  
+                  {/* List the entries based on the 7-day chart data */}
+                  {[...chartData].reverse().map((day) => (
+                    <div key={day.fullDate} className={`flex justify-between items-center p-4 rounded-lg border-l-4 transition-all hover:bg-gray-50 ${day.score > 0 ? 'bg-white border-peachDark shadow-sm' : 'bg-white/50 border-gray-300'}`}>
                       <span className="font-bold text-gray-700">
-                        {entry.date}
+                        {/* Display "Today" for the current day */}
+                        {day.fullDate === chartData.slice(-1)[0].fullDate ? "Today" : day.name} 
+                        <span className="text-xs font-normal text-gray-400 ml-1">({day.fullDate})</span>
                       </span>
-                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${moodScores[entry.mood] > 1 ? "bg-orange-100 text-orange-700" : "bg-gray-100 text-gray-400"}`}>
-                        {entry.mood}
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${day.score > 0 ? "bg-orange-100 text-orange-700" : "bg-gray-100 text-gray-400"}`}>
+                        {day.mood}
                       </span>
                     </div>
                   ))}
-                  
-                  {history.length === 0 && (
-                    <p className="text-center text-gray-500">No entries found in your local history.</p>
-                  )}
                 </div>
 
               </div>
