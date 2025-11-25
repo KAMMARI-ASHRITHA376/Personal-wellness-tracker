@@ -15,12 +15,21 @@ function App() {
   }, []);
 
   const handleLogout = () => {
-    setUser(null); // Clear React state
-    localStorage.removeItem('currentUser'); // Clear browser memory
-    // Reloading ensures all components fully reset
-    window.location.reload(); 
-  };
+    // Show a confirmation dialog to the user
+    const confirmed = window.confirm("Are you sure you want to log out?");
 
+    if (confirmed) {
+      // If the user clicks YES (OK)
+      setUser(null); // Clear React state
+      localStorage.removeItem('currentUser'); // Clear browser memory
+      
+      // Optional: You can navigate to the login page state if your router supported it,
+      // but since we are using simple state and reload, we just let the page reload:
+      window.location.reload(); 
+    }
+    // If the user clicks NO (Cancel), the function returns, and the page stays on Home.
+  };
+  
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
