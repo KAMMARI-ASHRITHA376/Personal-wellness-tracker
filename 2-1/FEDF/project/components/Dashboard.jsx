@@ -60,9 +60,11 @@ const Journal = ({ user }) => {
     </div>
   );
 };
+// ... inside the Dashboard component definition (around line 90) ...
 
+// ... rest of the component ...
 // Main Dashboard Component
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user, handleLogout }) => { 
   const [activeTab, setActiveTab] = useState('home');
   
   const cards = [
@@ -76,7 +78,7 @@ const Dashboard = ({ user }) => {
   ];
 
   return (
-    <div className="w-full">
+ <div className="w-full">
       <nav className="sticky top-0 z-50 bg-[#fff5e6]/95 backdrop-blur-sm shadow-sm py-5 w-full">
         <div className="max-w-7xl mx-auto flex justify-center items-center flex-wrap gap-6 md:gap-10 font-bold text-peachDark text-lg px-4">
           {['Home', 'Meditation', 'Mood', 'Journal', 'To-Do', 'HerCycle', 'Games', 'Insights'].map((item) => (
@@ -88,7 +90,13 @@ const Dashboard = ({ user }) => {
               {item === 'Mood' ? 'Mood Tracker' : item}
             </button>
           ))}
-          <button onClick={() => window.location.reload()} className="text-red-600 hover:text-red-800 ml-4">Logout</button>
+          <button 
+            onClick={handleLogout} // <--- FINAL FIX HERE
+            className="text-red-600 hover:text-red-800 border-b-2 border-transparent hover:border-red-800 transition-colors duration-200 ml-4"
+          >
+            Logout
+          </button>
+
         </div>
       </nav>
 
