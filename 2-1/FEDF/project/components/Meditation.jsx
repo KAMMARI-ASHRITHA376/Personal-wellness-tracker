@@ -1,19 +1,33 @@
 import { useState, useRef, useEffect } from 'react';
+// IMPORT LOCAL AUDIO FILES HERE
+import EarthSound from './Earth.mp3';
+import PeaceSound from './Peace.mp3';
+import PositiveSound from './Positive.mp3';
 
 const Meditation = () => {
   const [minutes, setMinutes] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
-  const [isActive, setIsActive] = useState(false); // Controls the Timer
-  const [isSessionStarted, setIsSessionStarted] = useState(false); // Tracks if we have started at least once
+  const [isActive, setIsActive] = useState(false);
+  const [isSessionStarted, setIsSessionStarted] = useState(false);
   const audioRef = useRef(null);
 
-  // Timer Logic
+  // --- 1. NEW AUDIO TRACK LIST USING LOCAL IMPORTS ---
+  const audioTracks = [
+    { name: "Earth Resonance", src: EarthSound },
+    { name: "Peaceful Garden", src: PeaceSound },
+    { name: "Deep Om", src: PositiveSound } // Using Positive.mp3 for Deep Om
+  ];
+  // --- END NEW LIST ---
+
+  // ... (Timer Logic: useEffect, startTimer, togglePause, formatTime functions remain the same) ...
+  // [Code Omitted for brevity - Use your existing working timer functions here]
+  
+  // Timer Logic (Re-pasting for context, ensure you use your latest version)
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
       interval = setInterval(() => setTimeLeft((t) => t - 1), 1000);
     } else if (timeLeft === 0 && isActive) {
-      // Timer Finished
       setIsActive(false);
       setIsSessionStarted(false);
       audioRef.current.pause();
@@ -23,7 +37,6 @@ const Meditation = () => {
     return () => clearInterval(interval);
   }, [isActive, timeLeft]);
 
-  // Initial Start
   const startTimer = () => {
     const minsStr = minutes.toString();
     if (!minsStr || isNaN(minsStr) || parseInt(minsStr) <= 0) {
@@ -36,14 +49,11 @@ const Meditation = () => {
     audioRef.current.play().catch(e => console.log("Audio play error:", e));
   };
 
-  // Toggle Pause/Resume (Controls BOTH Timer and Music)
   const togglePause = () => {
     if (isActive) {
-      // PAUSE EVERYTHING
       setIsActive(false);
       audioRef.current.pause();
     } else {
-      // RESUME EVERYTHING
       if (timeLeft > 0) {
         setIsActive(true);
         audioRef.current.play();
@@ -56,17 +66,17 @@ const Meditation = () => {
     const secs = (seconds % 60).toString().padStart(2, '0');
     return `${mins}:${secs}`;
   };
+  // --- END Timer Logic ---
+
 
   return (
     <div className="animate-fade-in w-full flex flex-col items-center">
       
-      {/* Header */}
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2 text-gray-800">🧘 Meditation Timer</h2>
         <p className="text-lg text-gray-700 font-medium">Set your desired meditation time and relax.</p>
       </div>
 
-      {/* Compact Box */}
       <div className="glass-panel text-center w-full max-w-md p-6">
         
         {/* Input & Start Button */}
@@ -75,7 +85,7 @@ const Meditation = () => {
             type="number" 
             value={minutes} 
             onChange={(e) => setMinutes(e.target.value)}
-            disabled={isSessionStarted} // Lock input while session is active/paused
+            disabled={isSessionStarted}
             className="p-2 border border-gray-300 rounded w-24 text-center text-lg focus:border-peachDark outline-none bg-white shadow-sm disabled:bg-gray-100" 
             placeholder="Minutes" 
             min="1"
@@ -116,27 +126,32 @@ const Meditation = () => {
           </h3>
           
           <select 
+            // 2. Map options using the local audioTracks array
             onChange={(e) => { 
               audioRef.current.src = e.target.value; 
               if(isActive) audioRef.current.play(); 
             }} 
             className="p-1 px-2 border border-gray-300 rounded text-sm bg-white text-gray-700 outline-none focus:border-peachDark cursor-pointer"
+            defaultValue={audioTracks[0].src} // Set default selected option
           >
-            <option value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3">Earth Resonance</option>
-            <option value="https://cdn.pixabay.com/download/audio/2022/03/09/audio_c8c90c59c5.mp3">Peaceful Garden</option>
-            <option value="https://cdn.pixabay.com/download/audio/2021/09/06/audio_3e6d192565.mp3">Deep Om</option>
+            {audioTracks.map((track) => (
+                <option key={track.name} value={track.src}>
+                    {track.name}
+                </option>
+            ))}
           </select>
 
-          {/* THE FIXED PAUSE BUTTON */}
+          {/* Pause/Resume Button Logic */}
           <button 
             onClick={togglePause} 
-            disabled={!isSessionStarted} // Only works if session has started
+            disabled={!isSessionStarted}
             className={`text-xs font-bold border border-gray-300 px-3 py-1 rounded transition-colors
               ${isSessionStarted ? 'text-gray-700 hover:bg-gray-50 cursor-pointer' : 'text-gray-300 cursor-not-allowed'}`}
           >
             {isActive ? "⏸ Pause " : "▶ Resume "}
           </button>
 
+          {/* Volume Control */}
           <div className="flex items-center gap-2 w-full max-w-[200px] mt-1">
              <span className="text-gray-400 text-xs">Vol:</span>
              <input 
@@ -146,7 +161,8 @@ const Meditation = () => {
              />
           </div>
 
-          <audio ref={audioRef} loop className="hidden" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" />
+          {/* Audio Element - Set initial source */}
+          <audio ref={audioRef} loop className="hidden" src={audioTracks[0].src} />
         </div>
       </div>
     </div>
