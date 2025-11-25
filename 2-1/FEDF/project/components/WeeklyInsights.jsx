@@ -10,8 +10,8 @@ const WeeklyInsights = ({ user, changeTab }) => {
     const data = JSON.parse(localStorage.getItem('wellness_data')) || [];
     const userHistory = data.filter(item => item.username === user.username);
     
-    // Sort the history by date (most recent first) for the list
-    userHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Sort the history by date for processing (oldest to newest is fine for array access)
+    userHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
     
     setHistory(userHistory);
     setLoading(false);
@@ -26,14 +26,15 @@ const WeeklyInsights = ({ user, changeTab }) => {
     d.setDate(d.getDate() - (6 - i)); 
     const dateStr = d.toLocaleDateString('en-US');
     
-    // Find the entry for this specific day
-    const entry = history.find(h => h.date === dateStr);
+    // CRITICAL FIX: Filter all entries for the day, then take the LAST one (most recent).
+    const entriesForDay = history.filter(h => h.date === dateStr);
+    const latestEntry = entriesForDay.length > 0 ? entriesForDay[entriesForDay.length - 1] : null;
     
     return {
       name: d.toLocaleDateString('en-US', { weekday: 'short' }),
       fullDate: dateStr,
-      score: entry ? (moodScores[entry.mood] || 3) : 0, 
-      mood: entry ? entry.mood : "No Data"
+      score: latestEntry ? (moodScores[latestEntry.mood] || 3) : 0, 
+      mood: latestEntry ? latestEntry.mood : "No Data"
     };
   });
 
@@ -68,7 +69,7 @@ const WeeklyInsights = ({ user, changeTab }) => {
                 
                 {/* --- THE GRAPH SECTION --- */}
                 <div className="mb-8 p-4 bg-white/50 rounded-xl border border-white">
-                  <h3 className="text-left font-bold text-gray-700 mb-4 ml-2">Mood Trend</h3>
+                  <h3 className="text-left font-bold text-gray-700 mb-4 ml-2">Mood Trend </h3>
                   <div className="h-[300px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={chartData}>
@@ -88,7 +89,7 @@ const WeeklyInsights = ({ user, changeTab }) => {
                   </div>
                 </div>
 
-                {/* --- LIST HISTORY (FIXED LOGIC) --- */}
+                {/* --- LIST HISTORY (Detailed History Section) --- */}
                 <h4 className="font-bold text-left mb-4 text-gray-700 border-b pb-2 text-lg">Detailed History</h4>
                 <div className="flex flex-col gap-3">
                   
