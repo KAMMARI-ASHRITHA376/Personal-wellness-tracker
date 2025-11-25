@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 // IMPORT LOCAL AUDIO FILES HERE
-import EarthSound from './Earth.mp3';
-import PeaceSound from './Peace.mp3';
-import PositiveSound from './Positive.mp3';
+import EarthSound from '../Earth.mp3';
+import PeaceSound from '../Peace.mp3';
+import PositiveSound from '../Positive.mp3';
 
 const Meditation = () => {
   const [minutes, setMinutes] = useState("");
