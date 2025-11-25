@@ -1,12 +1,38 @@
 import { useState, useEffect } from 'react';
 
+// Game suggestions based on mood
+const gamesByMood = {
+    'Happy': [{ id: 'reaction', title: '⚡ Quick Tap', description: 'Test your reflexes and channel that energy!' }],
+    'Calm': [{ id: 'breathing', title: '🌬️ Mindful Breathing', description: 'Center yourself with a guided exercise.' }],
+    'Sad': [{ id: 'breathing', title: '🌬️ Mindful Breathing', description: 'Find a moment of peace and calm.' }],
+    'Anxious': [{ id: 'breathing', title: '🌬️ Mindful Breathing', description: 'Soothe your anxiety with deep breaths.' }],
+    'Angry': [{ id: 'reaction', title: '⚡ Quick Tap', description: 'Channel your energy into this fast-paced game.' }]
+};
+
 const Games = () => {
   const [activeGame, setActiveGame] = useState(null);
+  const [currentMood, setCurrentMood] = useState(null);
   const [breathingText, setBreathingText] = useState("Get Ready...");
   const [scale, setScale] = useState(1);
   const [reactionScore, setReactionScore] = useState(0);
 
-  // Breathing Game Logic
+  // --- Logic to Fetch Latest Mood ---
+  useEffect(() => {
+    // Read wellness_data from local storage
+    const history = JSON.parse(localStorage.getItem('wellness_data')) || [];
+    
+    // Find the latest entry that has a non-empty mood value
+    const latestEntry = history.slice().reverse().find(entry => entry.mood && entry.mood !== "Neutral");
+
+    if (latestEntry) {
+        setCurrentMood(latestEntry.mood);
+    } else {
+        // Default mood if no mood has ever been tracked
+        setCurrentMood('Calm'); 
+    }
+  }, []);
+
+  // --- Breathing Game Logic (Timer independent) ---
   useEffect(() => {
     if (activeGame !== 'breathing') return;
     const cycle = () => {
@@ -22,40 +48,47 @@ const Games = () => {
     const interval = setInterval(cycle, 12000);
     return () => clearInterval(interval);
   }, [activeGame]);
+  
+  // Get suggestions based on the fetched mood
+  const suggestedGames = gamesByMood[currentMood] || gamesByMood['Calm'];
 
   return (
     <div className="animate-fade-in max-w-3xl mx-auto text-center">
-      {/* --- UPPER PART: Transparent Header --- */}
+      
+      {/* Header */}
       <div className="mb-8">
         <h2 className="text-4xl font-bold mb-3 text-gray-800">🎮 Stress-Relief Games</h2>
         <p className="text-xl text-gray-700 font-medium">Engage in fun activities designed to alleviate tension.</p>
       </div>
 
-      {/* --- DOWN PART: White Box --- */}
+      {/* Content Box */}
       <div className="glass-panel min-h-[400px] flex flex-col justify-center items-center relative">
         
-        {!activeGame && (
-          <div className="flex flex-wrap justify-center gap-6">
-            <button 
-              onClick={() => setActiveGame('breathing')} 
-              className="w-48 h-48 bg-gradient-to-br from-sky-200 to-blue-200 rounded-2xl hover:scale-105 transition shadow-lg flex flex-col items-center justify-center p-4 text-blue-900"
-            >
-              <span className="text-6xl mb-4">🌬️</span>
-              <span className="font-bold text-xl">Breathing</span>
-              <span className="text-sm opacity-70 mt-2">Calm & Center</span>
-            </button>
-            
-            <button 
-              onClick={() => setActiveGame('reaction')} 
-              className="w-48 h-48 bg-gradient-to-br from-orange-200 to-red-200 rounded-2xl hover:scale-105 transition shadow-lg flex flex-col items-center justify-center p-4 text-red-900"
-            >
-              <span className="text-6xl mb-4">⚡</span>
-              <span className="font-bold text-xl">Quick Tap</span>
-              <span className="text-sm opacity-70 mt-2">Focus & Energy</span>
-            </button>
+        {!activeGame && currentMood && (
+          <div className="w-full">
+             <div className="bg-white p-8 rounded-xl shadow-md mb-8">
+                <h3 className="font-bold text-gray-700 text-xl mb-4">
+                    Suggestions for when you feel <span className="text-peachDark">{currentMood}</span>
+                </h3>
+                <div className="flex flex-wrap justify-center gap-6">
+                    {suggestedGames.map(game => (
+                        <button 
+                            key={game.id}
+                            onClick={() => setActiveGame(game.id)} 
+                            className={`w-48 h-48 rounded-2xl hover:scale-105 transition shadow-lg flex flex-col items-center justify-center p-4 text-white
+                                ${game.id === 'breathing' ? 'bg-gradient-to-br from-green-400 to-green-600' : 'bg-gradient-to-br from-orange-400 to-red-600'}`}
+                        >
+                            <span className="text-3xl mb-2">{game.title.includes('Quick Tap') ? '⚡' : '🌬️'}</span>
+                            <span className="font-bold text-lg">{game.title}</span>
+                            <span className="text-xs opacity-80 mt-1">{game.description}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
           </div>
         )}
-
+        
+        {/* Breathing Game Interface */}
         {activeGame === 'breathing' && (
           <div className="w-full">
             <button onClick={() => setActiveGame(null)} className="absolute top-6 left-6 text-gray-500 hover:text-black font-bold">← Back</button>
@@ -70,6 +103,7 @@ const Games = () => {
           </div>
         )}
 
+        {/* Reaction Game Interface (Placeholder for brevity) */}
         {activeGame === 'reaction' && (
            <div className="w-full">
               <button onClick={() => setActiveGame(null)} className="absolute top-6 left-6 text-gray-500 hover:text-black font-bold">← Back</button>
@@ -82,10 +116,12 @@ const Games = () => {
                  >
                    TAP!
                  </button>
-                 <p className="mt-4 text-sm text-gray-500">Tap as fast as you can!</p>
+                 <p className="mt-4 text-sm text-gray-500">Tap to release energy!</p>
               </div>
            </div>
         )}
+
+        {!currentMood && !activeGame && <p className="text-gray-500">Loading mood suggestions...</p>}
       </div>
     </div>
   );
