@@ -5,19 +5,24 @@ const Login = ({ setUser }) => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
 
-  // Check Local Storage on mount to see if a user has ever signed up
+  // Check Local Storage on mount for initial setup
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-    // If there are no users stored, the first visit should default to sign up
-    if (storedUsers.length === 0) {
+    const loggedInUser = localStorage.getItem('currentUser');
+    
+    // Auto-login if a session is found
+    if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
+        setUser(user);
+    } else if (storedUsers.length === 0) {
+      // First time user should default to sign up
       setIsLogin(false);
-      setMessage('Welcome! Please Sign Up to begin.');
     } else {
-      // If users exist, default to login
+      // Default to login screen
       setIsLogin(true);
-      setMessage('');
     }
-  }, []);
+  }, [setUser]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,9 +38,11 @@ const Login = ({ setUser }) => {
     if (isLogin) {
       // --- LOGIN ATTEMPT ---
       if (userExists) {
+        // Successful Login
         const userData = { username: formData.username };
         setUser(userData);
         localStorage.setItem('currentUser', JSON.stringify(userData));
+        setMessage('Login successful!');
       } else {
         setMessage('Error: Username not found. Please Sign Up first.');
       }
@@ -43,16 +50,16 @@ const Login = ({ setUser }) => {
       // --- SIGN UP ATTEMPT ---
       if (userExists) {
         setMessage('Username already exists. Please Log In.');
-        setIsLogin(true); // Switch to login screen
+        setIsLogin(true);
       } else {
-        // Successful Sign Up
+        // Successful Sign Up - FORCE LOGIN STEP
         storedUsers.push(formData.username);
         localStorage.setItem('registeredUsers', JSON.stringify(storedUsers));
         
-        const userData = { username: formData.username };
-        setUser(userData); // Log in immediately
-        localStorage.setItem('currentUser', JSON.stringify(userData));
-        setMessage('Sign Up successful!');
+        // --- CRITICAL FIX: GO TO LOGIN PAGE ---
+        setIsLogin(true); 
+        setFormData({ username: formData.username, password: '' }); // Clear password for security
+        setMessage('Sign Up successful! Please Log In with your new credentials.');
       }
     }
   };
