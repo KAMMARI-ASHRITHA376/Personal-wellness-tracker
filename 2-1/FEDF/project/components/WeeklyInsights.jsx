@@ -1,39 +1,84 @@
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
+// Component to display the recommendation card
+const RecommendationCard = ({ positiveDays, negativeDays, changeTab }) => {
+    const isPositiveWeek = positiveDays >= negativeDays;
+
+    if (isPositiveWeek) {
+        return (
+            <div className="recommendation-card good-week bg-green-50 border border-green-200 p-6 rounded-xl shadow-md text-left mb-10">
+                <h3 className="text-xl font-bold text-green-800 mb-3">Keep the Momentum!</h3>
+                <p className="text-green-700 mb-4">Your mood entries suggest a successful and positive week. Let's keep that energy up:</p>
+                <ul>
+                    <li className="mb-2">🎮 **Games:** Challenge yourself with "**Quick Tap**" to maintain focus.</li>
+                    <li>✅ **To-Do:** Set a new, ambitious goal for tomorrow while you feel good.</li>
+                </ul>
+                <div className="text-center mt-4">
+                    <button onClick={() => changeTab('games')} className="btn-primary bg-green-600 hover:bg-green-700">
+                        Play Games
+                    </button>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className="recommendation-card tough-week bg-red-50 border border-red-200 p-6 rounded-xl shadow-md text-left mb-10">
+                <h3 className="text-xl font-bold text-red-800 mb-3">Focus on Relaxation</h3>
+                <p className="text-red-700 mb-4">Your journal entries suggest a potentially challenging week. We recommend:</p>
+                <ul>
+                    <li className="mb-2">🧘‍♀️ **Meditation:** Take 10 minutes with the "**Peaceful Garden**" track.</li>
+                    <li>🌬️ **Games:** Try the "**Mindful Breathing**" exercise to center yourself.</li>
+                </ul>
+                <div className="text-center mt-4">
+                    <button onClick={() => changeTab('meditation')} className="btn-primary bg-red-600 hover:bg-red-700">
+                        Go to Meditation
+                    </button>
+                </div>
+            </div>
+        );
+    }
+};
+
+
 const WeeklyInsights = ({ user, changeTab }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // READ FROM LOCALSTORAGE: Combines Moods and Journals
     const data = JSON.parse(localStorage.getItem('wellness_data')) || [];
     const userHistory = data.filter(item => item.username === user.username);
-    
-    // Sort the history by date for processing (oldest to newest is fine for array access)
     userHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
-    
     setHistory(userHistory);
     setLoading(false);
   }, [user]);
 
   // --- DATA PROCESSING FOR GRAPH ---
   const moodScores = { "Happy": 5, "Calm": 4, "Neutral": 3, "Sad": 2, "Anxious": 1, "Angry": 1 };
+  let positiveDays = 0;
+  let negativeDays = 0;
 
-  // Generate data points for the last 7 days (used for both graph and list)
   const chartData = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i)); 
     const dateStr = d.toLocaleDateString('en-US');
     
-    // CRITICAL FIX: Filter all entries for the day, then take the LAST one (most recent).
     const entriesForDay = history.filter(h => h.date === dateStr);
     const latestEntry = entriesForDay.length > 0 ? entriesForDay[entriesForDay.length - 1] : null;
     
+    const score = latestEntry ? (moodScores[latestEntry.mood] || 3) : 0;
+    
+    // 1. Sentiment Calculation Logic
+    if (score >= 4) { // Happy or Calm
+        positiveDays++;
+    } else if (score <= 2 && score !== 0) { // Sad, Anxious, Angry (but not No Data)
+        negativeDays++;
+    }
+
     return {
       name: d.toLocaleDateString('en-US', { weekday: 'short' }),
       fullDate: dateStr,
-      score: latestEntry ? (moodScores[latestEntry.mood] || 3) : 0, 
+      score: score, 
       mood: latestEntry ? latestEntry.mood : "No Data"
     };
   });
@@ -54,20 +99,30 @@ const WeeklyInsights = ({ user, changeTab }) => {
     <div className="animate-fade-in max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-4xl font-bold mb-3 text-gray-800">🧠 Your Weekly Insights</h2>
-        <p className="text-xl text-gray-700 font-medium">Visualizing your emotional journey over the past week.</p>
+        <p className="text-xl text-gray-700 font-medium">A summary of your well-being based on your logs this week.</p>
       </div>
-      <div className="glass-panel w-full">
-        {loading ? <p>Loading...</p> : (
-          <>
+      
+      {loading ? <p className="text-center">Loading insights...</p> : (
+        <>
+            
+            {/* 1. RECOMMENDATION CARD (The new section) */}
+            {history.length > 0 && 
+                <RecommendationCard 
+                    positiveDays={positiveDays} 
+                    negativeDays={negativeDays} 
+                    changeTab={changeTab}
+                />
+            }
+            
             {history.length === 0 ? (
-              <div className="text-center py-8">
+              <div className="glass-panel text-center py-8">
                  <h3 className="font-bold text-gray-700 text-xl mb-2">No entries yet.</h3>
                  <button onClick={() => changeTab('mood')} className="btn-primary">Track Mood Now</button>
               </div>
             ) : (
-              <div className="w-full">
+              <div className="glass-panel w-full">
                 
-                {/* --- THE GRAPH SECTION --- */}
+                {/* 2. THE GRAPH SECTION */}
                 <div className="mb-8 p-4 bg-white/50 rounded-xl border border-white">
                   <h3 className="text-left font-bold text-gray-700 mb-4 ml-2">Mood Trend </h3>
                   <div className="h-[300px] w-full">
@@ -89,19 +144,17 @@ const WeeklyInsights = ({ user, changeTab }) => {
                   </div>
                 </div>
 
-                {/* --- LIST HISTORY (Detailed History Section) --- */}
-                <h4 className="font-bold text-left mb-4 text-gray-700 border-b pb-2 text-lg">Detailed History</h4>
+                {/* 3. LIST HISTORY */}
+                <h4 className="font-bold text-left mb-4 text-gray-700 border-b pb-2 text-lg">Your 7-Day Journal Log</h4>
                 <div className="flex flex-col gap-3">
-                  
-                  {/* List the entries based on the 7-day chart data */}
+                  {/* List the entries based on the 7-day chart data (reversed to show today first) */}
                   {[...chartData].reverse().map((day) => (
                     <div key={day.fullDate} className={`flex justify-between items-center p-4 rounded-lg border-l-4 transition-all hover:bg-gray-50 ${day.score > 0 ? 'bg-white border-peachDark shadow-sm' : 'bg-white/50 border-gray-300'}`}>
                       <span className="font-bold text-gray-700">
-                        {/* Display "Today" for the current day */}
                         {day.fullDate === chartData.slice(-1)[0].fullDate ? "Today" : day.name} 
                         <span className="text-xs font-normal text-gray-400 ml-1">({day.fullDate})</span>
                       </span>
-                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${day.score > 0 ? "bg-orange-100 text-orange-700" : "bg-gray-100 text-gray-400"}`}>
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${day.score >= 4 ? "bg-green-100 text-green-700" : day.score <= 2 && day.score !== 0 ? "bg-red-100 text-red-700" : day.score === 3 ? "bg-yellow-100 text-yellow-700" : "bg-gray-100 text-gray-400"}`}>
                         {day.mood}
                       </span>
                     </div>
@@ -110,9 +163,8 @@ const WeeklyInsights = ({ user, changeTab }) => {
 
               </div>
             )}
-          </>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 };
