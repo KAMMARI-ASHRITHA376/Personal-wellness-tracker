@@ -36,7 +36,7 @@ const Journal = ({ user }) => {
     // 3. Save back to LocalStorage
     localStorage.setItem('wellness_data', JSON.stringify([...existingData, newEntry]));
     
-    setStatus("Saved to Browser! ✍️"); 
+    setStatus("Saved Successfully! ✍️"); 
     setText(""); 
     setTimeout(() => setStatus(""), 3000);
   };
