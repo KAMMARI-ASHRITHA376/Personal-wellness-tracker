@@ -6,23 +6,29 @@ const WeeklyInsights = ({ user, changeTab }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // READ FROM LOCALSTORAGE instead of MongoDB
+    // READ FROM LOCALSTORAGE
+    // Note: Assuming the structure is: [{ username: 'test', mood: 'Happy', date: '11/25/2025' }, ...]
     const data = JSON.parse(localStorage.getItem('wellness_data')) || [];
-    // Filter for current user
     const userHistory = data.filter(item => item.username === user.username);
+    
+    // Sort the history by date (most recent first) for the list
+    userHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
     setHistory(userHistory);
     setLoading(false);
   }, [user]);
 
-  // --- DATA PROCESSING FOR GRAPH (Same as before) ---
+  // --- DATA PROCESSING FOR GRAPH ---
   const moodScores = { "Happy": 5, "Calm": 4, "Neutral": 3, "Sad": 2, "Anxious": 1, "Angry": 1 };
 
+  // Generate data for the last 7 days for the chart
   const chartData = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i)); 
-    const dateStr = d.toLocaleDateString();
-    // Get last entry for the date
-    const entry = history.filter(h => h.date === dateStr).pop();
+    const dateStr = d.toLocaleDateString('en-US');
+    
+    // Find the entry for this specific day
+    const entry = history.find(h => h.date === dateStr);
     
     return {
       name: d.toLocaleDateString('en-US', { weekday: 'short' }),
@@ -60,6 +66,8 @@ const WeeklyInsights = ({ user, changeTab }) => {
               </div>
             ) : (
               <div className="w-full">
+                
+                {/* --- THE GRAPH SECTION --- */}
                 <div className="mb-8 p-4 bg-white/50 rounded-xl border border-white">
                   <h3 className="text-left font-bold text-gray-700 mb-4 ml-2">Mood Trend</h3>
                   <div className="h-[300px] w-full">
@@ -80,6 +88,26 @@ const WeeklyInsights = ({ user, changeTab }) => {
                     </ResponsiveContainer>
                   </div>
                 </div>
+
+                {/* --- LIST HISTORY (FIXED LOGIC) --- */}
+                <h4 className="font-bold text-left mb-4 text-gray-700 border-b pb-2 text-lg">Detailed History ({history.length} entries)</h4>
+                <div className="flex flex-col gap-3">
+                  {history.map((entry, index) => (
+                    <div key={index} className={`flex justify-between items-center p-4 rounded-lg border-l-4 transition-all hover:bg-gray-50 ${moodScores[entry.mood] > 1 ? 'bg-white border-peachDark shadow-sm' : 'bg-white/50 border-gray-300'}`}>
+                      <span className="font-bold text-gray-700">
+                        {entry.date}
+                      </span>
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${moodScores[entry.mood] > 1 ? "bg-orange-100 text-orange-700" : "bg-gray-100 text-gray-400"}`}>
+                        {entry.mood}
+                      </span>
+                    </div>
+                  ))}
+                  
+                  {history.length === 0 && (
+                    <p className="text-center text-gray-500">No entries found in your local history.</p>
+                  )}
+                </div>
+
               </div>
             )}
           </>
